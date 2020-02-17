@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Swiper from "rn-deck-swiper";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 import * as data from "../assets/questions.json";
 
@@ -14,6 +14,8 @@ export default class App extends Component {
 			isSwipingBack: false,
 			cardIndex: 0
 		};
+
+		this.state.cards = this.shuffleStack();
 	}
 
 	renderCard = (card) => {
@@ -28,6 +30,20 @@ export default class App extends Component {
 		this.setState({
 			swipedAllCards: true
 		});
+
+		this.setState({ cards: this.shuffleStack() });
+	};
+
+	shuffleStack = () => {
+		let newStackOrder = this.state.cards;
+		for (let i = newStackOrder.length - 1; i > 0; i--) {
+			let j = Math.floor(Math.random() * (i + 1));
+			[newStackOrder[i], newStackOrder[j]] = [
+				newStackOrder[j],
+				newStackOrder[i]
+			];
+		}
+		return newStackOrder;
 	};
 
 	swipeBack = () => {
@@ -63,85 +79,14 @@ export default class App extends Component {
 					onSwiped={this.onSwiped}
 					onTapCard={this.swipeLeft}
 					cards={this.state.cards}
+					infinite={true}
 					cardIndex={this.state.cardIndex}
 					cardVerticalMargin={80}
 					renderCard={this.renderCard}
 					onSwipedAll={this.onSwipedAllCards}
-					overlayLabels={{
-						bottom: {
-							title: "BLEAH",
-							style: {
-								label: {
-									backgroundColor: "black",
-									borderColor: "black",
-									color: "white",
-									borderWidth: 1
-								},
-								wrapper: {
-									flexDirection: "column",
-									alignItems: "center",
-									justifyContent: "center"
-								}
-							}
-						},
-						left: {
-							title: "NOPE",
-							style: {
-								label: {
-									backgroundColor: "black",
-									borderColor: "black",
-									color: "white",
-									borderWidth: 1
-								},
-								wrapper: {
-									flexDirection: "column",
-									alignItems: "flex-end",
-									justifyContent: "flex-start",
-									marginTop: 30,
-									marginLeft: -30
-								}
-							}
-						},
-						right: {
-							title: "LIKE",
-							style: {
-								label: {
-									backgroundColor: "black",
-									borderColor: "black",
-									color: "white",
-									borderWidth: 1
-								},
-								wrapper: {
-									flexDirection: "column",
-									alignItems: "flex-start",
-									justifyContent: "flex-start",
-									marginTop: 30,
-									marginLeft: 30
-								}
-							}
-						},
-						top: {
-							title: "SUPER LIKE",
-							style: {
-								label: {
-									backgroundColor: "black",
-									borderColor: "black",
-									color: "white",
-									borderWidth: 1
-								},
-								wrapper: {
-									flexDirection: "column",
-									alignItems: "center",
-									justifyContent: "center"
-								}
-							}
-						}
-					}}
 					animateOverlayLabelsOpacity
 					animateCardOpacity
-				>
-					<Button onPress={this.swipeLeft} title="Swipe Left" />
-				</Swiper>
+				></Swiper>
 			</View>
 		);
 	}
