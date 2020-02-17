@@ -35,7 +35,6 @@ export default class App extends Component {
 	};
 
 	shuffleStack = () => {
-		console.log(this.state.cards);
 		let newStackOrder = this.state.cards;
 		for (let i = newStackOrder.length - 1; i > 0; i--) {
 			let j = Math.floor(Math.random() * (i + 1));
@@ -44,7 +43,6 @@ export default class App extends Component {
 				newStackOrder[i]
 			];
 		}
-		console.log(this.state.cards);
 		return newStackOrder;
 	};
 
